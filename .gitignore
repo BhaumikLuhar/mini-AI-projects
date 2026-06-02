@@ -1,0 +1,17 @@
+# Environment
+.env
+.aivenv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+logs/*.jsonl
+
+# Saved chats
+*.json
+
+# IDE
+.vscode/
+.idea/
