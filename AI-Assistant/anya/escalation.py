@@ -4,7 +4,12 @@ from pathlib import Path
 class EscalationManager:
 
     def __init__(self,config_file="escalation_rules.json"):
-        with open(config_file,"r",encoding="utf-8")as f:
+        config_path = Path(config_file)
+
+        if not config_path.is_absolute():
+            config_path = Path(__file__).resolve().parent / config_path
+
+        with open(config_path,"r",encoding="utf-8")as f:
             self.rules=json.load(f)
 
         self.keywords=self.rules["keywords"]

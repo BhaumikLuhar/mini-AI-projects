@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-PERSONA_DIR = Path("personas")
+PERSONA_DIR = Path(__file__).resolve().parent.parent / "personas"
 
 
 class PersonaManager:

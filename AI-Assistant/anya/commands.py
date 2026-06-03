@@ -9,6 +9,12 @@ class CommandResult:
     
 def handle_command(user_input, session, persona_manager):
 
+    if user_input == "exit":
+        return CommandResult(
+            handled=True,
+            should_exit=True
+        )
+
     if not user_input.startswith("/"):
         return CommandResult(
             handled=False
@@ -41,7 +47,7 @@ def handle_command(user_input, session, persona_manager):
     if user_input.startswith("/load "):
         parts = user_input.split(maxsplit=1)
 
-        if len(parts!=2):
+        if len(parts) != 2:
             print("Usage: /load <file>")
 
             return CommandResult(
@@ -85,6 +91,9 @@ def handle_command(user_input, session, persona_manager):
 
         if not persona_manager.persona_exists(persona_name):
             print("Persona not found.")
+            return CommandResult(
+                handled=True
+            )
 
         prompt = (persona_manager.load_persona(persona_name))
 
@@ -118,7 +127,7 @@ def handle_command(user_input, session, persona_manager):
         )
     
 
-    if user_input == "/quit":
+    if user_input in {"/quit", "exit"}:
 
         return CommandResult(
             handled=True,
