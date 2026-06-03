@@ -34,10 +34,11 @@ class Evaluator:
         ]
 
         response = (client.get_reply(messages))
+        response_text = response["text"]
 
         passed = (
             self.check_expected_phrases(
-                response,
+                response_text,
                 test_case[
                     "expected_phrases"
                 ]
@@ -50,7 +51,7 @@ class Evaluator:
             "passed":
                 passed,
             "response":
-                response
+                response_text
         }
     
 

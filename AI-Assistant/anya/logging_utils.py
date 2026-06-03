@@ -2,8 +2,9 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-LOG_DIR = Path("logs")
-LOG_DIR.mkdir(exist_ok=True)
+BASE_DIR = Path(__file__).resolve().parent.parent
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 class ConversationLogger:
     def __init__(self):

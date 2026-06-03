@@ -6,23 +6,24 @@ from openai import OpenAI
 
 load_dotenv()
 
+
 class LLMClient:
 
     def __init__(self):
-        api_key=os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("GROQ_API_KEY")
 
         if not api_key:
             raise ValueError(
-                "OPENAI_API_KEY missing."
+                "GROQ_API_KEY missing."
             )
-        
-        self.model=os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
 
-        self.client=OpenAI(api_key=api_key, base_url=("https://api.groq.com/openai/v1"))
+        self.model = os.getenv("MODEL_NAME", "meta-llama/llama-4-scout-17b-16e-instruct")
 
+        self.client = OpenAI(api_key=api_key, base_url=(
+            "https://api.groq.com/openai/v1"))
 
-    def get_reply(self,messages):
-        response=(
+    def get_reply(self, messages):
+        response = (
             self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
@@ -34,10 +35,9 @@ class LLMClient:
             "text": response.choices[0].message.content,
             "usage": response.usage
         }
-    
 
-    def stream_reply(self,messages):
-        
+    def stream_reply(self, messages):
+
         stream = (
             self.client.chat.completions.create(
                 model=self.model,
@@ -74,8 +74,8 @@ class LLMClient:
         return "".join(
             full_text
         )
-    
-    def assess_confidence(self,question: str,answer: str):
+
+    def assess_confidence(self, question: str, answer: str):
 
         prompt = f"""
 You are evaluating an AI response.
@@ -97,7 +97,7 @@ Rules:
 
 Return ONLY the number.
 """
-        
+
         response = (
             self.client.chat.completions.create(
                 model=self.model,
@@ -117,14 +117,13 @@ Return ONLY the number.
         )
 
         if text != None:
-            text =text.strip()
+            text = text.strip()
             try:
                 return int(text)
             except ValueError:
                 return 3
-            
 
-            
+
 def estimate_tokens(text):
     return max(
         1,
