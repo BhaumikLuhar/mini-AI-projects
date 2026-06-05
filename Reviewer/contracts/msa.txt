@@ -1,0 +1,21 @@
+MASTER SERVICES AGREEMENT
+
+This Master Services Agreement ("MSA") is entered into between Zenith Software Pvt Ltd ("Provider") and RetailOne India Ltd ("Customer") effective as of 2026-02-01.
+
+Services:
+Provider shall deliver software development and maintenance services.
+
+Contract Value:
+The total contract value shall be INR 5,000,000.
+
+Term:
+The Agreement shall remain effective for 36 months.
+
+Termination:
+Customer may terminate for material breach with 30 days written notice.
+
+Liability:
+Provider's liability shall not exceed the fees paid under this Agreement.
+
+Payment Terms:
+Invoices are payable within 30 days.

@@ -1,0 +1,18 @@
+NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement ("Agreement") is entered into on 2026-01-15 between Acme Technologies Pvt Ltd ("Disclosing Party") and Bright Solutions LLP ("Receiving Party").
+
+The Receiving Party agrees to keep confidential all proprietary information disclosed under this Agreement.
+
+The Receiving Party shall not disclose confidential information to any third party without prior written consent.
+
+Term:
+This Agreement shall remain in effect for 24 months from the Effective Date.
+
+Automatic Renewal:
+This Agreement shall automatically renew for successive 12-month periods unless terminated in writing at least 30 days before expiration.
+
+Liability:
+The Receiving Party shall be liable for damages resulting from unauthorized disclosure.
+
+Signed by both parties on 2026-01-15.
