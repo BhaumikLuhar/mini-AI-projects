@@ -1,0 +1,18 @@
+INFORMATION SECURITY POLICY
+
+Effective Date: 2026-03-01
+
+Purpose:
+This policy establishes security controls for all employees and contractors.
+
+Access Control:
+Users must use multi-factor authentication.
+
+Data Retention:
+Customer data shall be retained for a minimum of seven years.
+
+Monitoring:
+The organization reserves the right to monitor all systems and network activity.
+
+Compliance:
+Violations may result in disciplinary action.
