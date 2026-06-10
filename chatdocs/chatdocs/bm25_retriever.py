@@ -4,45 +4,63 @@ import re
 
 from chatdocs.indexer import Indexer
 
+from chatdocs.utils import (
+    generate_chunk_id
+)
+
 
 class BM25Retriever:
     def __init__(self):
-        self.indexer= Indexer()
-        self.documents=[]
-        self.tokenized_docs=[]
-        self.bm25=None
+        self.indexer = Indexer()
+        self.documents = []
+        self.tokenized_docs = []
+        self.bm25 = None
         self.build_index()
 
-    
-    def tokenize(self,text):
-        text=text.lower()
-        tokens=re.findall(r"\+w",text)
+    def tokenize(self, text):
+        text = text.lower()
+        tokens = re.findall(r"\w+", text)
         return tokens
 
     def build_index(self):
 
-        self.documents= self.indexer.get_all_chunks()
+        self.documents = self.indexer.get_all_chunks()
 
-        self.tokenized_docs=[ self.tokenize(doc["text"] for doc in self.documents)]
+        self.tokenized_docs = [
+            self.tokenize(doc["text"])
+            for doc in self.documents
+        ]
 
-        self.bm25=BM25Okapi(self.tokenized_docs)
+        if not self.tokenized_docs:
+            self.bm25 = None
+            return
 
+        self.bm25 = BM25Okapi(self.tokenized_docs)
 
-    def search(self,query,top_k=5):
+    def search(self, query, top_k=5):
 
-        query_tokens=self.tokenize(query)
+        if not self.bm25 or not self.documents:
+            return []
 
-        scores=self.bm25.get_scores(query_tokens)
-        ranked=sorted(zip(self.documents, scores), key=lambda x:x[1], reverse=True)
+        query_tokens = self.tokenize(query)
 
-        results=[]
+        scores = self.bm25.get_scores(query_tokens)
+        ranked = sorted(zip(self.documents, scores),
+                        key=lambda x: x[1], reverse=True)
+
+        results = []
 
         for doc, score in ranked[:top_k]:
             results.append(
-                **doc,
-                "score":float(score)
+                {
+                    **doc,
+                    "id": generate_chunk_id(
+                        doc["source"],
+                        doc["page"],
+                        doc["chunk_index"]
+                    ),
+                    "score": float(score)
+                }
             )
 
         return results
-
-

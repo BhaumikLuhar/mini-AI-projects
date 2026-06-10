@@ -6,25 +6,40 @@ from chatdocs.config import (
     Config
 )
 
+from chatdocs.utils import (
+    generate_chunk_id
+)
+
 
 class Retriever:
 
     def __init__(self):
 
-        self.indexer=Indexer()
+        self.indexer = Indexer()
 
+    def retrieve_chunks(self, query, top_k=None):
+
+        if top_k is None:
+            top_k = Config.TOP_K
+
+        chunks = self.indexer.search(query, top_k)
+
+        for chunk in chunks:
+            chunk["id"] = generate_chunk_id(
+                chunk["source"],
+                chunk["page"],
+                chunk["chunk_index"]
+            )
+
+        return chunks
 
     def retrieve(self, query, top_k=None):
 
-        if top_k is None:
-            top_k=Config.TOP_K
-
-        return self.indexer.search(query,top_k)
-
+        return self.retrieve_chunks(query, top_k)
 
     def build_context(self, chunks):
 
-        context_parts=[]
+        context_parts = []
 
         for chunk in chunks:
             block = (
@@ -36,11 +51,10 @@ class Retriever:
             context_parts.append(block)
 
         return "\n\n------------------\n\n".join(context_parts)
-    
 
-    def extract_citations(self,chunks):
+    def extract_citations(self, chunks):
 
-        citations=set()
+        citations = set()
 
         for chunk in chunks:
 
@@ -52,7 +66,7 @@ class Retriever:
             )
 
         return sorted(citations)
-    
+
     def has_results(
         self,
         chunks
@@ -72,15 +86,13 @@ class Retriever:
             <= Config.RELEVANCE_THRESHOLD
         )
 
-    
+    def retrieve_context(self, query, top_k=None):
 
-    def retrieve_context(self,query,top_k=None):
+        chunks = self.retrieve(query, top_k)
 
-        chunks=self.retrieve(query,top_k)
+        context = self.build_context(chunks)
 
-        context=self.build_context(chunks)
-
-        citations= self.extract_citations(chunks)
+        citations = self.extract_citations(chunks)
 
         return {
             "chunks": chunks,
@@ -91,10 +103,9 @@ class Retriever:
             ),
             "best_distance": self.best_distance(chunks)
         }
-    
-    def best_distance(self,chunks):
+
+    def best_distance(self, chunks):
         if not chunks:
             return None
-        
+
         return min(chunk["distance"] for chunk in chunks)
-        

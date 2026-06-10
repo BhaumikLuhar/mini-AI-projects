@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from langchain_text_splitters import (
     RecursiveCharacterTextSplitter
 )
@@ -18,18 +16,18 @@ def create_splitter():
     )
 
 
-def chunk_document(document:dict):
+def chunk_document(document: dict):
 
-    splitter=create_splitter()
+    splitter = create_splitter()
 
-    chunks=splitter.split_text(document["text"])
+    chunks = splitter.split_text(document["text"])
 
-    chunk_records=[]
+    chunk_records = []
 
     for index, chunk in enumerate(chunks):
 
         chunk_records.append({
-            "id": generate_chunk_id(document["source"],document["page"],index),
+            "id": generate_chunk_id(document["source"], document["page"], index),
             "source": document["source"],
             "page": document["page"],
             "chunk_index": index,
@@ -39,17 +37,16 @@ def chunk_document(document:dict):
     return chunk_records
 
 
-def chunk_documents(documents:list[dict]):
+def chunk_documents(documents: list[dict]):
 
-    all_chunks=[]
+    all_chunks = []
 
     for doc in documents:
-        chunks=chunk_document(doc)
+        chunks = chunk_document(doc)
 
-        all_chunks.append(chunks)
+        all_chunks.extend(chunks)
 
     return all_chunks
-
 
 
 def chunk_statistics(
@@ -79,8 +76,7 @@ def chunk_statistics(
     }
 
 
-
-def build_metadata(chunk:dict):
+def build_metadata(chunk: dict):
 
     return {
         "source": chunk["source"],
@@ -89,18 +85,17 @@ def build_metadata(chunk:dict):
     }
 
 
+def prepare_chroma_payload(chunks: list[dict]):
 
-def prepare_chroma_payload(chunks:list[dict]):
-
-    ids=[
+    ids = [
         chunk["id"] for chunk in chunks
     ]
 
-    documents=[
+    documents = [
         chunk["text"] for chunk in chunks
     ]
 
-    metadatas=[
+    metadatas = [
         build_metadata(chunk) for chunk in chunks
     ]
 

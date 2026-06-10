@@ -66,3 +66,31 @@ class Config:
             "0.3"
         )
     )
+
+    ENABLE_RERANK = (
+        os.getenv(
+            "ENABLE_RERANK",
+            "true"
+        ).lower() == "true"
+    )
+
+    RERANK_TOP_N = int(
+        os.getenv(
+            "RERANK_TOP_N",
+            "20"
+        )
+    )
+
+    FINAL_CONTEXT_K = int(
+        os.getenv(
+            "FINAL_CONTEXT_K",
+            "5"
+        )
+    )
+
+    DEBUG = (
+        os.getenv(
+            "DEBUG",
+            "false"
+        ).lower() == "true"
+    )
