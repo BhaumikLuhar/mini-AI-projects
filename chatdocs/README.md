@@ -167,6 +167,27 @@ Best 5 Chunks
 
 The re-ranker improves context quality before answer generation, reducing retrieval noise and increasing citation accuracy.
 
+### Evaluation
+
+The project includes lightweight evaluation scripts for:
+
+* Retrieval recall@1, recall@3, and recall@5
+* Answer keyword accuracy
+* Citation accuracy
+* Hallucination resistance
+
+Run from the `chatdocs` folder:
+
+```text
+python evals/eval_runner.py
+```
+
+The summary is written to:
+
+```text
+evals/eval_report.json
+```
+
 ---
 
 ### Source Citations

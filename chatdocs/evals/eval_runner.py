@@ -1,83 +1,32 @@
-import json
-
-from chatdocs.rag import (
-    RAGEngine
+from evals.common import (
+    run_all_evaluations,
+    write_report,
 )
+import sys
+from pathlib import Path
 
-with open(
-    "evals/eval_questions.json"
-) as f:
-
-    tests = json.load(f)
-
-
-rag=RAGEngine()
-
-passed=0
-failed=0
-
-for test in tests:
-
-    result=rag.answer(test["question"])
-
-    answer=result["answer"].lower()
-
-    success=True
-
-    for keyword in test["expected_contains"]:
-        if keyword.lower() not in answer:
-            success=False
-
-    sources=[source for source in result["citations"]]
-
-    if test["expected_source"] not in sources:
-        success=False
-
-    if success:
-        passed+=1
-        print(
-            f"PASS: "
-            f"{test['question']}"
-        )
-    else:
-        failed+=1
-        print(
-            f"FAIL: "
-            f"{test['question']}"
-        )
-            
-print()
-
-print(
-    f"Passed: {passed}"
-)
-
-print(
-    f"Failed: {failed}"
-)
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 
-hallucination_tests = [
-    "What is the CEO salary?",
-    "Where is the Mars office?"
-]
-passed=False
-for question in hallucination_tests:
-    result = rag.answer(
-            question
-        )
-    
-    if (
-            "i don't see that"
-            in result["answer"].lower()
-        ):
-        print(
-            f"PASS: "
-            f"{question}"
-        )
+def main():
+    report = run_all_evaluations()
+    write_report(report)
 
-    else:
-        print(
-            f"FAIL: "
-            f"{question}"
-        )
+    retrieval = report["retrieval"]
+    answers = report["answers"]
+    citations = report["citations"]
+    hallucination = report["hallucination"]
+
+    print(f"Recall@1: {retrieval['recall@1']:.2%}")
+    print(f"Recall@3: {retrieval['recall@3']:.2%}")
+    print(f"Recall@5: {retrieval['recall@5']:.2%}")
+    print()
+    print(f"Answer Accuracy: {answers['accuracy']:.2%}")
+    print(f"Citation Accuracy: {citations['accuracy']:.2%}")
+    print(f"Hallucination Resistance: {hallucination['success_rate']:.2%}")
+
+
+if __name__ == "__main__":
+    main()
