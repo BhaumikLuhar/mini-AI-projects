@@ -18,3 +18,9 @@ logs/*.jsonl
 
 chats/
 logs/
+
+chroma_data/
+
+index_state.json
+
+docs/

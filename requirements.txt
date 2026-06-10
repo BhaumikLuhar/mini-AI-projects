@@ -16,3 +16,10 @@ tqdm==4.67.3
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 pypdf>=4.2.0
+chromadb
+sentence-transformers
+langchain-text-splitters
+python-docx
+numpy
+tqdm
+rank-bm25
