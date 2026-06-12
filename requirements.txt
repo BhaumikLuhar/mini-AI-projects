@@ -23,3 +23,6 @@ python-docx
 numpy
 tqdm
 rank-bm25
+streamlit>=1.46.0
+requests>=2.32.0
+tavily-python>=0.7.0
