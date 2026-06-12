@@ -28,4 +28,7 @@ docs/
 
 .streamlit/secrets.toml
 
+*.dbsales-ops-agent/.streamlit/secrets.toml
+sales-ops-agent/.streamlit/secrets.toml
+
 *.db
